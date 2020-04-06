@@ -11,6 +11,9 @@ MLC(x, y)
 
 \item{y}{response vector}
 }
+\value{
+An object of class \code{\link[tabularMLC]{MLC.model-class}} parameters used for the model
+}
 \description{
 Function to create classifier class with dataset
 }

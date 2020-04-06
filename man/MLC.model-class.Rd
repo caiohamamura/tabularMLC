@@ -7,3 +7,17 @@
 \description{
 Maximum likelihood model class
 }
+\section{Slots}{
+
+\describe{
+\item{\code{k}}{the constant fraction to be used in model \eqn{\frac{1}{(2 \pi)^{\frac{L}{2}}  \sqrt{\left | \Sigma_i  \right |}}}}
+
+\item{\code{mu}}{mean (\eqn{\mu_i}) list for each variable and class}
+
+\item{\code{invCovs}}{inverted covariance matrix (\eqn{\Sigma_i}) for each class}
+
+\item{\code{groups}}{the classification levels}
+
+\item{\code{vars}}{the variables used for trainning the model}
+}}
+

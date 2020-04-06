@@ -20,6 +20,8 @@ setClass(
 #' @param x feature vector
 #' @param y response vector
 #' 
+#' @return An object of class \code{\link[tabularMLC]{MLC.model-class}} parameters used for the model  
+#' 
 #' @export
 MLC = function(x, y) {
   colNames = colnames(x)
@@ -31,9 +33,11 @@ MLC = function(x, y) {
   
   res = cpp_MLC(x, y, levels(y))
   model.class = new("MLC.model",
-                    k=res[[1]],
-                    invCovs=res[[2]],
-                    groups=res[[3]])
+                    k = res[["k"]],
+                    invCovs = res[["invCovs"]],
+                    groups = res[["groups"]],
+                    mu = res[["mu"]],
+                    vars = colNames)
   
   return(model.class)
 }

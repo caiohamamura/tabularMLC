@@ -32,6 +32,7 @@ List cpp_MLC(arma::mat X, arma::rowvec Y, CharacterVector levels) {
     int L = levels.length();
 
     NumericVector k(L);
+    auto mu = List::create();
     auto invCovs = List::create();
 
     double a = std::pow(2.0 * M_PI, L/2.0);
@@ -40,20 +41,21 @@ List cpp_MLC(arma::mat X, arma::rowvec Y, CharacterVector levels) {
     for (int i = 1; i <= L; i++) {
         arma::uvec ids = find(Y == i); // Find indices
         arma::mat subX = X.rows(ids);
+        mu.push_back((arma::mat)arma::mean(subX));
 
         arma::mat covMat = arma::cov(subX);
         double b = std::sqrt(arma::det(covMat));
-        Rprintf("i:%d  b:%lf", i, b);
+        Rprintf("i:%d  b:%lf\n", i, b);
         k[i-1] = 1.0 / (a*b);
         invCovs.push_back(arma::inv_sympd(covMat));
     }    
 
     auto resultList = List::create(
+        _["groups"] = levels,
+        _["mu"] = mu,
         _["k"] = k,
-        _["invCovs"] = invCovs,
-        _["groups"] = levels 
+        _["invCovs"] = invCovs
     );
-
     
     return(resultList);
 }
