@@ -2,6 +2,7 @@
 #include "RcppArmadillo.h"
 #include <math.h>
 #include <cmath>
+#include <stdint.h>
 
 // Based on http://www.csre.iitb.ac.in/~avikb/GNR401/DIP/DIP_401_lecture_7.pdf
 // likelihood = (1 / (a * b)) * c
@@ -28,26 +29,35 @@ using namespace Rcpp;
 // available from R
 //
 // [[Rcpp::export]]
-List cpp_MLC(arma::mat X, arma::rowvec Y, CharacterVector levels) {
-    int L = levels.length();
+List cpp_MLC(const arma::mat X, const arma::vec Y, const CharacterVector levels) {
+    const int L = levels.length();
+    const double a = std::pow(2.0 * M_PI, L/2.0);
+    const double EPSILON = std::pow(DBL_EPSILON, 2/3);
+    
 
     NumericVector k(L);
     auto mu = List::create();
     auto invCovs = List::create();
 
-    double a = std::pow(2.0 * M_PI, L/2.0);
-    Rprintf("a = %lf\n", a);
     
     for (int i = 1; i <= L; i++) {
-        arma::uvec ids = find(Y == i); // Find indices
+        arma::uvec ids = arma::find(Y == i); // Find indices
         arma::mat subX = X.rows(ids);
         mu.push_back((arma::mat)arma::mean(subX));
 
+
         arma::mat covMat = arma::cov(subX);
-        double b = std::sqrt(arma::det(covMat));
-        Rprintf("i:%d  b:%lf\n", i, b);
-        k[i-1] = 1.0 / (a*b);
-        invCovs.push_back(arma::inv_sympd(covMat));
+        covMat.diag() += EPSILON;
+        arma::mat invCov = arma::inv_sympd(covMat);
+        invCovs.push_back(invCov);
+
+        // Determinants
+        arma::cx_double logDet = arma::log_det(covMat);
+        double det = exp(real(logDet));
+        double k_i = 1.0 / (a * std::sqrt(det));
+        k[i-1] = k_i;
+        
+
     }    
 
     auto resultList = List::create(
@@ -60,3 +70,33 @@ List cpp_MLC(arma::mat X, arma::rowvec Y, CharacterVector levels) {
     return(resultList);
 }
 
+
+// k * exp(-dist %*% invCov %*% dist_t)
+// [[Rcpp::export]]
+arma::mat cpp_predict(S4 model, arma::mat X) {
+    CharacterVector levels = model.slot("groups");
+    const int L = levels.length();    
+    const int n = X.n_rows;
+    
+    List mu = model.slot("mu");
+    NumericVector k = model.slot("k");
+    List invCovs = model.slot("invCovs");
+    
+    arma::mat classLikelihoods(n, L);
+
+    for (int i = 0; i < L; i++) {
+        const double k_i = k[i];
+        arma::rowvec mu_i = mu[i];
+        arma::mat invCov_i = invCovs[i];
+
+        arma::mat distance = X.each_row() - mu_i;
+        arma::mat likelihood = arma::sum((distance * invCov_i) % distance,1);
+        likelihood *= -0.5;
+        likelihood = arma::exp(likelihood);
+        likelihood.transform( [k_i](double val) { return (val * k_i); } );
+
+        classLikelihoods.col(i) = likelihood;
+    }
+    
+    return(classLikelihoods);
+}

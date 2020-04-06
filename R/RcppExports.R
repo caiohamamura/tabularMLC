@@ -5,3 +5,7 @@ cpp_MLC <- function(X, Y, levels) {
     .Call(`_tabularMLC_cpp_MLC`, X, Y, levels)
 }
 
+cpp_predict <- function(model, X) {
+    .Call(`_tabularMLC_cpp_predict`, model, X)
+}
+

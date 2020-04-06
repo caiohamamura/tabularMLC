@@ -12,3 +12,10 @@ Imports: Rcpp (>= 1.0.4)
 LinkingTo: Rcpp, RcppArmadillo
 RcppModules: HelperModule
 RoxygenNote: 7.1.0
+Collate:
+  zzz.R
+  tabularMLC.R
+  RcppExports.R
+  MLC.R
+  
+  

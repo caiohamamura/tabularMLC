@@ -7,21 +7,34 @@
 using namespace Rcpp;
 
 // cpp_MLC
-List cpp_MLC(arma::mat X, arma::rowvec Y, CharacterVector levels);
+List cpp_MLC(const arma::mat X, const arma::vec Y, const CharacterVector levels);
 RcppExport SEXP _tabularMLC_cpp_MLC(SEXP XSEXP, SEXP YSEXP, SEXP levelsSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
-    Rcpp::traits::input_parameter< arma::rowvec >::type Y(YSEXP);
-    Rcpp::traits::input_parameter< CharacterVector >::type levels(levelsSEXP);
+    Rcpp::traits::input_parameter< const arma::mat >::type X(XSEXP);
+    Rcpp::traits::input_parameter< const arma::vec >::type Y(YSEXP);
+    Rcpp::traits::input_parameter< const CharacterVector >::type levels(levelsSEXP);
     rcpp_result_gen = Rcpp::wrap(cpp_MLC(X, Y, levels));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_predict
+arma::mat cpp_predict(S4 model, arma::mat X);
+RcppExport SEXP _tabularMLC_cpp_predict(SEXP modelSEXP, SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< S4 >::type model(modelSEXP);
+    Rcpp::traits::input_parameter< arma::mat >::type X(XSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_predict(model, X));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tabularMLC_cpp_MLC", (DL_FUNC) &_tabularMLC_cpp_MLC, 3},
+    {"_tabularMLC_cpp_predict", (DL_FUNC) &_tabularMLC_cpp_predict, 2},
     {NULL, NULL, 0}
 };
 

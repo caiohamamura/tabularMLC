@@ -4,7 +4,7 @@
 \alias{MLC}
 \title{MLC}
 \usage{
-MLC(x, y)
+MLC(x, y, ridge = 1e-09)
 }
 \arguments{
 \item{x}{feature vector}
