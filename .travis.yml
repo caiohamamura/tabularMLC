@@ -35,7 +35,7 @@ matrix:
     - mkdir $HOME/.R && echo -e 'CXX_STD = CXX14\n\nVER=\nCCACHE=ccache\nCC=$(CCACHE)
       gcc$(VER) -std=gnu99\nCXX=$(CCACHE) g++$(VER)\nC11=$(CCACHE) g++$(VER)\nC14=$(CCACHE)
       g++$(VER)\nFC=$(CCACHE) gfortran$(VER)\nF77=$(CCACHE) gfortran$(VER)' > $HOME/.R/Makevars
-    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH="$(brew --prefix llvm)/bin:$PATH";
+    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH="$(brew --prefix gcc)/bin:$PATH";
       fi
   - os: windows
     language: bash
@@ -49,7 +49,7 @@ matrix:
     - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' > .Rprofile
     - Rscript -e 'install.packages("devtools")'
     - Rscript -e 'install.packages("tinytex")'
-    - Rscript -e "tinytex::install_tinytex()"
+    - Rscript -e "tinytex::install_tinytex()" > ../install_tinytex.log 2>&1
     - Rscript -e 'install.packages(c("remotes"));if (!all(c("remotes") %in% installed.packages()))
       { q(status = 1, save = "no")}'
     - 'Rscript -e ''deps <- remotes::dev_package_deps(dependencies = NA);remotes::install_deps(dependencies
@@ -63,6 +63,7 @@ addons:
   homebrew:
     packages:
     - ccache
+    - gcc
 language: r
 script:
 - R CMD build .
