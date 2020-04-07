@@ -22,3 +22,23 @@ likelihood is TRUE, then it will also return the calculated likelihoods.
 \description{
 \code{predict} is inherited from the generic function for predictions from the results.
 }
+\examples{
+data(iris)
+
+n = length(iris$Species)
+
+# Split training by sample
+training = sample(1:n, size=n*0.7)
+validation = (1:n)[-training]
+
+# Train model with training dataset
+mlcModel = MLC(Species ~ ., iris[training,])
+
+# Predict using validation dataset
+predict = predict(mlcModel, iris[validation,])
+
+# Print confusion matrix
+confusionMatrix = table(predicted=predict, observed=iris$Species[validation])
+print(confusionMatrix)
+
+}
