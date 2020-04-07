@@ -48,6 +48,8 @@ matrix:
     - export R_LIBS_USER=${HOME}/Documents/R/win-library/3.6
     - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' > .Rprofile
     - Rscript -e 'install.packages("devtools")'
+    - Rscript -e 'install.packages("tinytex")'
+    - Rscript -e "tinytex::install_tinytex()"
     - Rscript -e 'install.packages(c("remotes"));if (!all(c("remotes") %in% installed.packages()))
       { q(status = 1, save = "no")}'
     - 'Rscript -e ''deps <- remotes::dev_package_deps(dependencies = NA);remotes::install_deps(dependencies
