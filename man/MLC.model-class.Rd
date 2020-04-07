@@ -14,10 +14,13 @@ Maximum likelihood model class
 
 \item{\code{mu}}{mean (\eqn{\mu_i}) list for each variable and class}
 
-\item{\code{invCovs}}{inverted covariance matrix (\eqn{\Sigma_i}) for each class}
+\item{\code{inverseCovarianceMatrices}}{inverted covariance matrix (\eqn{\Sigma_i}) for each class}
 
 \item{\code{groups}}{the classification levels}
 
 \item{\code{vars}}{the variables used for trainning the model}
 }}
 
+\seealso{
+\code{\link[tabularMLC:MLC]{MLC}} which creates this class
+}

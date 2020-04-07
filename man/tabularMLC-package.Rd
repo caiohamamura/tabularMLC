@@ -4,10 +4,28 @@
 \name{tabularMLC-package}
 \alias{tabularMLC}
 \alias{tabularMLC-package}
-\title{Helper}
+\title{Tabular maximum likelihood classifier}
 \description{
-My cool MLC Package
+Maximum likelihood is a common classifier used for land use classification.
+It calculates the likelihood of an object to belong to each class based on
+an expected distribution and a metric of distance.
 }
 \details{
+The most common implementation, like in this package, will assume normal
+distributed variables within classes, and calculate the distance, based
+on Mahalanobis distance.
+
 Imports
+}
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://github.com/caiohamamura/tabularMLC}
+  \item Report bugs at \url{https://github.com/caiohamamura/tabularMLC/issues}
+}
+
+}
+\author{
+\strong{Maintainer}: Caio Hamamura \email{caiohamamura@gmail.com} (\href{https://orcid.org/0000-0001-6149-5885}{ORCID})
+
 }

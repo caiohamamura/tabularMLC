@@ -1,0 +1,85 @@
+env:
+  global:
+  - PKGNAME=tabularMLC
+matrix:
+  include:
+  - r: release
+    os: linux
+    env: BADGE=linux
+    cache:
+    - ccache
+    - packages
+    before_install:
+    - mkdir $HOME/.R && echo -e 'CXX_STD = CXX14\n\nVER=\nCCACHE=ccache\nCC=$(CCACHE)
+      gcc$(VER) -std=gnu99\nCXX=$(CCACHE) g++$(VER)\nC11=$(CCACHE) g++$(VER)\nC14=$(CCACHE)
+      g++$(VER)\nFC=$(CCACHE) gfortran$(VER)\nF77=$(CCACHE) gfortran$(VER)' > $HOME/.R/Makevars
+  - r: devel
+    os: linux
+    env: BADGE=linux
+    cache:
+    - ccache
+    - packages
+    before_install:
+    - mkdir $HOME/.R && echo -e 'CXX_STD = CXX14\n\nVER=\nCCACHE=ccache\nCC=$(CCACHE)
+      gcc$(VER) -std=gnu99\nCXX=$(CCACHE) g++$(VER)\nC11=$(CCACHE) g++$(VER)\nC14=$(CCACHE)
+      g++$(VER)\nFC=$(CCACHE) gfortran$(VER)\nF77=$(CCACHE) gfortran$(VER)' > $HOME/.R/Makevars
+  - os: osx
+    env:
+    - BADGE=osx
+    - LD_LIBRARY_PATH=" /opt/local/lib:$LD_LIBRARY_PATH"
+    - CPATH="/opt/local/include:$CPATH"
+    cache:
+    - ccache
+    - packages
+    before_install:
+    - mkdir $HOME/.R && echo -e 'CXX_STD = CXX14\n\nVER=\nCCACHE=ccache\nCC=$(CCACHE)
+      gcc$(VER) -std=gnu99\nCXX=$(CCACHE) g++$(VER)\nC11=$(CCACHE) g++$(VER)\nC14=$(CCACHE)
+      g++$(VER)\nFC=$(CCACHE) gfortran$(VER)\nF77=$(CCACHE) gfortran$(VER)' > $HOME/.R/Makevars
+    - if [ "$TRAVIS_OS_NAME" = "osx" ]; then export PATH="$(brew --prefix llvm)/bin:$PATH";
+      fi
+  - os: windows
+    language: bash
+    install:
+    - choco install -y r --version 3.6.2
+    - choco install -y rtools --version 3.5.0.4
+    - choco install -y pandoc
+    - export PATH=/c/Program\ Files/R/R-3.6.2/bin/x64:/c/Rtools/bin:/c/Rtools/mingw_64/bin:$PATH
+    - mkdir -p ${HOME}/Documents/R/win-library/3.6
+    - export R_LIBS_USER=${HOME}/Documents/R/win-library/3.6
+    - echo 'options(repos = c(CRAN = "https://cloud.r-project.org"))' > .Rprofile
+    - Rscript -e 'install.packages("devtools")'
+    - Rscript -e 'install.packages(c("remotes"));if (!all(c("remotes") %in% installed.packages()))
+      { q(status = 1, save = "no")}'
+    - 'Rscript -e ''deps <- remotes::dev_package_deps(dependencies = NA);remotes::install_deps(dependencies
+      = TRUE);if (!all(deps$package %in% installed.packages())) { message("missing:
+      ", paste(setdiff(deps$package, installed.packages()), collapse=", ")); q(status
+      = 1, save = "no")}'''
+addons:
+  apt:
+    packages:
+    - ccache
+  homebrew:
+    packages:
+    - ccache
+language: r
+script:
+- R CMD build .
+- R CMD check *tar.gz --as-cran
+- R CMD INSTALL . --build
+after_script:
+- cat ${PKGNAME}.Rcheck/00install.out
+- cat ${PKGNAME}.Rcheck/00check.log
+branches:
+  only:
+  - master
+  - "/^v[\\d\\.]*$/"
+before_deploy:
+- 'export PKGVERSION=$(sed -n ''/^Version:/s/Version: \(.*\)/\1/p'' DESCRIPTION)'
+- echo "Upload file glob is $(echo $PKGNAME)_${PKGVERSION}*"
+deploy:
+  provider: releases
+  api_key:
+    secure: TwoeSbnuT02u+IiEbvOHt11g2pNxL5UE5Xuz9qrFI7sWRHky+wajtFpJF4cnLYCLwUWOxF3JadAqtJ0OWjGWwf1MUsdrc3CPk6DaYSfz35Y7mN9aYi8WqzQWVY+VD5VPwuEd38kTcsALvsD9fu+3/nX4ngJSuuYDQwqlJNfmgN1+HUh8kaA1hMS3MGU/bTF3gPxKjX60gi+zKN9OvoJQzvtvKYxiJLwi9lb3Wj08sfuNvKtHHewu1XdlVkTc/Bj/LSVng8mCiSUeiLaKfUZBpPuVHgXuPabLSHkoPjJbeifldCZvWe8T8qn0qk1rSsth2rONRWI9CQiSaUeCy0Xcbv+poTo/X7vijwPHJc8Pwmuy1YgwryNTDkVO5gdx1vq9/axBJy6CHnpOPlJgSUIrqpF5GPC96VYYSj1j/0tCFbB6v+GARc4BsVs8QKJFv/qRNBJsb9OWiO5Ef6aTorgUK9Nokio/GjytTvsDFEGfPgSaAItfmHivEIorNeytE9hxHki1YEOgsYhJ2WkGLtW6C+glQhK3PDF1YkUX6bo9F7DSL9CjvKOZxYB+e/RV6BpE86wE8K1IoKCYcpLPqhyyUmgUgsi58YOxsGsBhOkZbOnsP5FRBf95SvolDUGRgzjvRruuD+IJ15U3PMAyQtWGzAVlXTNyJDTuNBzgIe7jL3g=
+  file: ''
+  on:
+    repo: caiohamamura/tabularMLC

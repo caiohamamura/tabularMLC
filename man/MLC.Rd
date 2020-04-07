@@ -2,18 +2,46 @@
 % Please edit documentation in R/MLC.R
 \name{MLC}
 \alias{MLC}
-\title{MLC}
+\alias{MLC.default}
+\alias{MLC.formula}
+\title{Maximum Likelihood Classifier}
 \usage{
-MLC(x, y, ridge = 1e-09)
+MLC(x, ...)
+
+\method{MLC}{formula}(formula, data = NULL, ...)
+
+\method{MLC}{default}(x, y = NULL, ...)
 }
 \arguments{
-\item{x}{feature vector}
+\item{x}{feature vector for the training set}
 
-\item{y}{response vector}
+\item{...}{for other signatures}
+
+\item{formula}{\code{formula}. The formula for defining the model.}
+
+\item{data}{the dataset}
+
+\item{y}{factor vector with the training set labels}
 }
 \value{
-An object of class \code{\link[tabularMLC]{MLC.model-class}} parameters used for the model
+An object of class \code{\link[tabularMLC:MLC.model-class]{MLC.model}} parameters used for the model
 }
 \description{
-Function to create classifier class with dataset
+Function to create the classifier class from the training set
+}
+\examples{
+data(iris)
+
+x = iris[, -5]
+y = iris$Species
+
+# Default x y interface
+mlcModel1 = MLC(x, y)
+
+# Formula interface
+mlcModel2 = MLC(Species ~ Petal.Length + Petal.Width, iris)
+
+# Formula except one column
+mlcModel3 = MLC(Species ~ . - Sepal.Length, iris)
+
 }
