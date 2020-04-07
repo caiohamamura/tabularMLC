@@ -80,6 +80,10 @@ deploy:
   provider: releases
   api_key:
     secure: TwoeSbnuT02u+IiEbvOHt11g2pNxL5UE5Xuz9qrFI7sWRHky+wajtFpJF4cnLYCLwUWOxF3JadAqtJ0OWjGWwf1MUsdrc3CPk6DaYSfz35Y7mN9aYi8WqzQWVY+VD5VPwuEd38kTcsALvsD9fu+3/nX4ngJSuuYDQwqlJNfmgN1+HUh8kaA1hMS3MGU/bTF3gPxKjX60gi+zKN9OvoJQzvtvKYxiJLwi9lb3Wj08sfuNvKtHHewu1XdlVkTc/Bj/LSVng8mCiSUeiLaKfUZBpPuVHgXuPabLSHkoPjJbeifldCZvWe8T8qn0qk1rSsth2rONRWI9CQiSaUeCy0Xcbv+poTo/X7vijwPHJc8Pwmuy1YgwryNTDkVO5gdx1vq9/axBJy6CHnpOPlJgSUIrqpF5GPC96VYYSj1j/0tCFbB6v+GARc4BsVs8QKJFv/qRNBJsb9OWiO5Ef6aTorgUK9Nokio/GjytTvsDFEGfPgSaAItfmHivEIorNeytE9hxHki1YEOgsYhJ2WkGLtW6C+glQhK3PDF1YkUX6bo9F7DSL9CjvKOZxYB+e/RV6BpE86wE8K1IoKCYcpLPqhyyUmgUgsi58YOxsGsBhOkZbOnsP5FRBf95SvolDUGRgzjvRruuD+IJ15U3PMAyQtWGzAVlXTNyJDTuNBzgIe7jL3g=
-  file: ''
+  file_glob: true
+  file: ${PKGNAME}_${PKGVERSION}*
+  overwrite: true
+  skip_cleanup: true
   on:
-    repo: caiohamamura/tabularMLC
+    repo: caiohamamura/${PKGNAME}
+    tags: true

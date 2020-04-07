@@ -103,41 +103,15 @@ MLC.default = function(x, y=NULL, ...) {
 
 
 
+
 #' Predict function for MLC.model-class
 #' 
 #' \code{predict} is inherited from the generic function for predictions from the results. 
 #' 
-#' @aliases predict.MLC.model
-#' 
 #' @param object \code{\link[tabularMLC]{MLC.model-class}} model class to use for prediction
-#' @param ... inherited from generic function (not in use)
-#' 
-#' @examples 
-#' data(iris)
-#' 
-#' n = length(iris$Species)
-#' 
-#' # Split training by sample
-#' training = sample(1:n, size=n*0.7)
-#' validation = (1:n)[-training]
-#' 
-#' # Train model with training dataset
-#' mlcModel = MLC(Species ~ ., iris[training,])
-#' 
-#' # Predict using validation dataset
-#' predict = predict(mlcModel, iris[validation,])
-#' 
-#' # Print confusion matrix
-#' confusionMatrix = table(predicted=predict, observed=iris$Species[validation])
-#' print(confusionMatrix)
-#'
-#' @method predict generic
-setGeneric("predict", function(object, ...)
-  standardGeneric("predict"))
-
-
 #' @param x data.frame. The feature vector to predict
 #' @param likelihood logical. Whether to return or not the likelihood values, default FALSE.
+#' @param ... inherited from generic function (not in use)
 #' 
 #' @return a factor vector with the predicted value. If
 #' likelihood is TRUE, then it will also return the calculated likelihoods.
