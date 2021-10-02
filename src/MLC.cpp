@@ -103,3 +103,14 @@ arma::mat cpp_predict(S4 model, arma::mat X) {
     
     return(classLikelihoods);
 }
+
+// [[Rcpp::export]]
+double cpp_mean(arma::vec X) {
+    return(arma::mean(X));
+}
+
+
+// [[Rcpp::export]]
+arma::vec cpp_quantile(arma::vec X, arma::vec Y) {
+    return(arma::quantile(X, Y));
+}

@@ -191,3 +191,14 @@ parseFormula = function(formula, data) {
   }
   return (list(m, y))
 }
+
+#' @export 
+armaMean = function(x) {
+  cpp_mean(x)
+}
+
+
+#' @export 
+armaQuantile = function(x, y) {
+  cpp_quantile(x, y)
+}

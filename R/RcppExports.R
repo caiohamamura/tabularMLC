@@ -9,3 +9,11 @@ cpp_predict <- function(model, X) {
     .Call(`_tabularMLC_cpp_predict`, model, X)
 }
 
+cpp_mean <- function(X) {
+    .Call(`_tabularMLC_cpp_mean`, X)
+}
+
+cpp_quantile <- function(X, Y) {
+    .Call(`_tabularMLC_cpp_quantile`, X, Y)
+}
+

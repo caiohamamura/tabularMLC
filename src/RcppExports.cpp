@@ -31,10 +31,35 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// cpp_mean
+double cpp_mean(arma::vec X);
+RcppExport SEXP _tabularMLC_cpp_mean(SEXP XSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type X(XSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_mean(X));
+    return rcpp_result_gen;
+END_RCPP
+}
+// cpp_quantile
+arma::vec cpp_quantile(arma::vec X, arma::vec Y);
+RcppExport SEXP _tabularMLC_cpp_quantile(SEXP XSEXP, SEXP YSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< arma::vec >::type X(XSEXP);
+    Rcpp::traits::input_parameter< arma::vec >::type Y(YSEXP);
+    rcpp_result_gen = Rcpp::wrap(cpp_quantile(X, Y));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_tabularMLC_cpp_MLC", (DL_FUNC) &_tabularMLC_cpp_MLC, 3},
     {"_tabularMLC_cpp_predict", (DL_FUNC) &_tabularMLC_cpp_predict, 2},
+    {"_tabularMLC_cpp_mean", (DL_FUNC) &_tabularMLC_cpp_mean, 1},
+    {"_tabularMLC_cpp_quantile", (DL_FUNC) &_tabularMLC_cpp_quantile, 2},
     {NULL, NULL, 0}
 };
 
