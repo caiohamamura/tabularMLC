@@ -1,3 +1,4 @@
-0.0.2
+
+# tabularMLC 0.0.2
  - Provided more details in the DESCRIPTION file.
  - Added relevant references in the description.
