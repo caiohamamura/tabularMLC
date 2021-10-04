@@ -2,7 +2,6 @@ Package: tabularMLC
 Type: Package
 Title: Tabular Maximum Likelihood Classifier
 Version: 0.0.2
-Date: 2020-04-05
 Authors@R: c(
   person(given="Caio", family="Hamamura", email="caiohamamura@gmail.com", role=c("aut", "cre"), comment=c(ORCID="https://orcid.org/0000-0001-6149-5885"))
   )
