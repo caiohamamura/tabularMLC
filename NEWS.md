@@ -1,5 +1,11 @@
 <!-- NEWS.md is maintained by https://cynkra.github.io/fledge, do not edit -->
 
+# tabularMLC 0.0.4
+
+* Use methods::is for checking classes
+* Remove force compilation flag CXX_STD = CXX11
+
+
 # tabularMLC 0.0.3
 
 * Begin to use fledge for NEWS.md
