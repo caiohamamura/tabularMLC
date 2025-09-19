@@ -3,3 +3,4 @@
 ^\.vscode$
 ^\.travis\.yml$
 ^\.github$
+^\.micromamba$
