@@ -76,10 +76,10 @@ MLC.default = function(x, y=NULL, ...) {
   }
   colNames = colnames(x)
   rowNames = rownames(x)
-  if (class(x)[1] != "matrix") 
+  if (methods::is(x,"matrix") == FALSE) 
     x = as.matrix(x)
-  if (class(y) != "factor")
-    if (class(y[,1]) != "factor") {
+  if (methods::is(y,"factor") == FALSE)
+    if (methods::is(y[,1],"factor") == FALSE) {
       stop("Response vector is not a factor")
     } else {
       y = y[,1]
@@ -147,7 +147,7 @@ predict.MLC.model = function(object, x=NULL, likelihood=FALSE, ...) {
     stop(sprintf("It looks like the x data.frame is missing some variables found in model:
                  %s\n", paste0(setdiff(model@vars, xVars), collapse="\n")))
   }
-  if (class(x)[1] != "matrix") {
+  if (methods::is(x,"matrix") == FALSE) {
     x = as.matrix(as.data.frame(x)[, model@vars])
   }
   
